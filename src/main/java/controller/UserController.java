@@ -1,18 +1,14 @@
 package controller;
 
 import jakarta.servlet.http.HttpServletRequest;
-import org.mybatis.logging.Logger;
-import org.mybatis.logging.LoggerFactory;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import pojo.User;
 import service.UserService;
-
-import javax.annotation.Resource;
 
 
 @Controller
@@ -65,5 +61,19 @@ public class UserController {
         password = encoder.encode(password);
         System.out.println(userService.register(username, password));
         return "redirect:/admin/login.jsp";
+    }
+
+    @RequestMapping("/logout")
+    public String logout( HttpServletRequest request){
+        try {
+            HttpSession session = request.getSession();
+            //销毁Session
+            session.invalidate();
+            return  "forward:/admin/login.jsp";
+        }catch(Exception e){
+            e.printStackTrace();
+            request.setAttribute("msg","系统错误");
+            return  "forward:/admin/login.jsp";
+        }
     }
 }
