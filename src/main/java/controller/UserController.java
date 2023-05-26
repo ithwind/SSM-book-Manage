@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import pojo.User;
 import service.UserService;
 
+import java.util.Map;
+
 
 @Controller
 public class UserController {
@@ -33,11 +35,14 @@ public class UserController {
         User u = new User();
         try {
             String password = request.getParameter("password");
-            String rawPassword = userService.login(username);
+            User user = userService.login(username);
+            String rawPassword = user.getPassword();
+            String role = user.getRole();
            //查询到用户
            if(encoder.matches(password, rawPassword)){
                u.setPassword(rawPassword);
                u.setUsername(username);
+               u.setRole(role);
                request.getSession().setAttribute("USER_SESSION", u);
                return "redirect:/Home";
            }else{
