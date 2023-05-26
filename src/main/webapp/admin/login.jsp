@@ -6,8 +6,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>登录</title>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/login.css">
+    <link rel="icon" href="${pageContext.request.contextPath}/bootstrap-icons-1.10.5/person.svg" />
 </head>
 <body>
 <div class="container">
