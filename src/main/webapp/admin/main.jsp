@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt" %>
 <%@ page contentType="text/html;charset=UTF-8"%>
 <html>
 <head>
@@ -68,6 +69,18 @@
                             </p>
                         </a>
                     </li>
+                    <c:if test="${sessionScope.USER_SESSION.role == 'Admin'}">
+                        <li class="nav-item menu-open">
+                            <a href="${pageContext.request.contextPath}/book" class="nav-link active">
+                                <i class="nav-icon fas fa-tachometer-alt"></i>
+                                <p>
+                                    图书管理
+                                    <i class="right fas fa-angle-left"></i>
+                                </p>
+                            </a>
+                        </li>
+                    </c:if>
+
                 </ul>
             </nav>
         </div>
