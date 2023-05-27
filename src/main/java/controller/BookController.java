@@ -59,12 +59,31 @@ public class BookController {
         try {
             Book book=bookService.selectBookById(id);
             if(book==null){
-                return new Result<>(false,"查询图书失败！");
+                return new Result<Book>(false,"查询图书失败！");
             }
-            return new Result<>(true,"查询图书成功",book);
+            return new Result<Book>(true,"查询图书成功",book);
         }catch (Exception e){
             e.printStackTrace();
-            return new Result<>(false,"查询图书失败！");
+            return new Result<Book>(false,"查询图书失败！");
+        }
+    }
+
+    /**
+     * 修改图书
+     */
+    @ResponseBody
+    @RequestMapping("/editBook")
+    public Result<Object> editBook(Book book){
+        try {
+            int count= bookService.editBook(book);
+            System.out.println(book);
+            if(count!=1){
+                return new Result<Object>(false, "编辑失败!");
+            }
+            return new Result<Object>(true, "编辑成功!");
+        }catch (Exception e){
+            e.printStackTrace();
+            return new Result<Object>(false, "编辑失败!");
         }
     }
 }

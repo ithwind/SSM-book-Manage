@@ -1,14 +1,11 @@
-package dao;
+package mapper;
 
 import com.github.pagehelper.Page;
-import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import pojo.Book;
 
-import java.util.List;
 
 
-@Mapper
 public interface BookMapper {
 
     @Select("select * from book where book_status != 3 order by book_publish_time desc")

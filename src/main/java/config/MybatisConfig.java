@@ -15,8 +15,7 @@ import java.util.Properties;
 
 
 @Configuration
-@MapperScan("dao")
-
+@MapperScan("mapper")
 public class MybatisConfig {
     //配置分页插件
     @Bean

@@ -187,8 +187,8 @@
 
   </dependencies>
   <build>
+    <!-- 如果不添加此节点mybatis的mapper.xml文件都会被漏掉。 -->
     <resources>
-      <!-- 使java目录下的.properties和.xml文件也能被读取 -->
       <resource>
         <directory>src/main/java</directory>
         <includes>
@@ -214,8 +214,8 @@
               <artifactId>maven-compiler-plugin</artifactId>
               <version>3.1</version>
               <configuration>
-                  <source>6</source>
-                  <target>6</target>
+                  <source>7</source>
+                  <target>7</target>
               </configuration>
           </plugin>
       </plugins>

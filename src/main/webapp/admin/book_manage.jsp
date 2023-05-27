@@ -144,12 +144,12 @@
                                         <td>${book.book_return_time}</td>
                                         <td class="text-center">
                                             <c:if test="${book.book_status == 0}">
-                                                <button type="button" class="btn bg-olive btn-xs" data-bs-toggle="modal" data-bs-target="#addOrEditModal"
+                                                <button type="button" class="btn bg-olive btn-xs" data-bs-toggle="modal" data-bs-target="#editModal"
                                                         onclick="findBookById(${book.book_id})"> 编辑
                                                 </button>
                                             </c:if>
                                             <c:if test="${book.book_status ==1 ||book.book_status == 2}">
-                                                <button type="button" class="btn bg-olive btn-xs" data-bs-toggle="modal" data-bs-target="#addOrEditModal"
+                                                <button type="button" class="btn bg-olive btn-xs" data-bs-toggle="modal" data-bs-target="#editModal"
                                                         onclick="findBookById(${book.book_id})" disabled> 编辑
                                                 </button>
                                             </c:if>
@@ -167,7 +167,7 @@
     </div>
 </div>
 <!-- 添加和编辑图书的模态窗口 -->
-<div class="modal fade" id="addOrEditModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
      aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -176,27 +176,27 @@
             </div>
             <div class="modal-body">
                 <form id="editBook">
-                    <span><input type="hidden" id="book_id" name="id"></span>
+                    <span><input type="hidden" id="book_id" name="book_id"></span>
                     <table id="editTab" class="table table-bordered table-striped" width="800px">
                         <%--图书的id,不展示在页面--%>
                         <tr>
                             <td>图书名称</td>
-                            <td><input class="form-control" placeholder="图书名称" name="name" id="book_name"></td>
+                            <td><input class="form-control" placeholder="图书名称" name="book_name" id="book_name"></td>
                             <td>标准ISBN</td>
-                            <td><input class="form-control" placeholder="标准ISBN" name="isbn" id="book_isbn"></td>
+                            <td><input class="form-control" placeholder="标准ISBN" name="book_isbn" id="book_isbn"></td>
                         </tr>
                         <tr>
                             <td>出版社</td>
-                            <td><input class="form-control" placeholder="出版社" name="press" id="book_press"></td>
+                            <td><input class="form-control" placeholder="出版社" name="book_press" id="book_press"></td>
                             <td>作者</td>
-                            <td><input class="form-control" placeholder="作者" name="author" id="book_author"></td>
+                            <td><input class="form-control" placeholder="作者" name="book_author" id="book_author"></td>
                         </tr>
                         <tr>
                             <td>书籍价格<br/></td>
-                            <td><input class="form-control" placeholder="书籍价格" name="price" id="book_price"></td>
+                            <td><input class="form-control" placeholder="书籍价格" name="book_price" id="book_price"></td>
                             <td>上架状态</td>
                             <td>
-                                <select class="form-control" id="book_status" name="status" >
+                                <select class="form-control" id="book_status" name="book_status" >
                                     <option value="0">上架</option>
                                     <option value="3">下架</option>
                                 </select>

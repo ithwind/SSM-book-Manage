@@ -2,14 +2,12 @@ package service.Impl;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
-import dao.BookMapper;
+import mapper.BookMapper;
 import entity.PageResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pojo.Book;
 import service.BookService;
-
-import java.util.List;
 
 @Service
 public class BookServiceImpl implements BookService {

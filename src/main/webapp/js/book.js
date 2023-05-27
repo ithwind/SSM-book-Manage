@@ -22,11 +22,25 @@ function findBookById(bookId){
 
 }
 
+//点击编辑的窗口的确定按钮时，提交图书信息
+function edit() {
+    //获取表单中图书id的内容
+    const book_id = $("#book_id").val();
+    //如果表单中有图书id的内容，说明本次为编辑操作
+    const url = getProjectPath() + "/editBook";
+    $.post(url, $("#editBook").serialize(), function (response) {
+        alert(response.message)
+        if (response.success === true) {
+            const book_name = $("#book_name").val();
+            window.location.href = getProjectPath()+"/book_manage?inputContent="+book_name;
+        }
+    })
+}
 /**
  * 查询项目路径
  */
 function getProjectPath() {
-    var pathName = window.document.location.pathname;
-    var projectName = pathName.substring(0, pathName.substring(1).indexOf('/') + 1);
+    const pathName = window.document.location.pathname;
+    const projectName = pathName.substring(0, pathName.substring(1).indexOf('/') + 1);
     return  projectName;
 }
