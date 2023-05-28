@@ -9,6 +9,10 @@ import org.springframework.stereotype.Service;
 import pojo.Book;
 import service.BookService;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 @Service
 public class BookServiceImpl implements BookService {
     @Autowired
@@ -36,5 +40,10 @@ public class BookServiceImpl implements BookService {
     @Override
     public int editBook(Book book) {
         return bookMapper.editBook(book);
+    }
+
+    @Override
+    public int addBook(Book book) {
+        return bookMapper.addBook(book);
     }
 }

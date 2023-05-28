@@ -2,6 +2,7 @@ package service;
 
 import com.github.pagehelper.Page;
 import entity.PageResult;
+import org.apache.ibatis.annotations.Update;
 import pojo.Book;
 
 import java.util.List;
@@ -25,5 +26,9 @@ public interface BookService {
      * 修改书籍数据
      */
     int editBook(Book book);
+    /**
+     * 添加图书
+     */
+    int addBook(Book book);
 
 }

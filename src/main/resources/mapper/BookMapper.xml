@@ -2,42 +2,40 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="mapper.BookMapper">
 
-<!--修改book信息-->
-<update id="editBook" >
-    update book
-    <trim prefix="set" suffixOverrides=",">
-        <if test="book_name != null" >
-            book_name = #{book_name},
-        </if>
-        <if test="book_isbn != null" >
-            book_isbn = #{book_isbn},
-        </if>
-        <if test="book_press != null" >
-            book_press = #{book_press},
-        </if>
-        <if test="book_author != null" >
-            book_author = #{book_author},
-        </if>
-        <if test="book_price != null" >
-            book_price = #{book_price},
-        </if>
-        <if test="book_publish_time != null" >
-            book_publish_time = #{book_publish_time},
-        </if>
-        <if test="book_status != null" >
-            book_status = #{book_status},
-        </if>
-        <if test="book_borrower != null" >
-            book_borrower= #{book_borrower },
-        </if>
-        <if test="book_borrow_time != null" >
-            book_borrow_time = #{book_borrow_time},
-        </if>
-        <if test="book_return_time != null" >
-            book_return_time = #{book_return_time}
-        </if>
-    </trim>
-    where book_id = #{book_id}
-</update>
+    <!--修改book信息-->
+    <update id="editBook" parameterType="pojo.Book">
+        update book
+        <trim prefix="set" suffixOverrides=",">
+            <if test="book_name != null" >
+                book_name = #{book_name},
+            </if>
+            <if test="book_isbn != null" >
+                book_isbn = #{book_isbn},
+            </if>
+            <if test="book_press != null" >
+                book_press = #{book_press},
+            </if>
+            <if test="book_author != null" >
+                book_author = #{book_author},
+            </if>
+            <if test="book_price != null" >
+                book_price = #{book_price},
+            </if>
+            <if test="book_publish_time != null" >
+                book_publish_time = #{book_publish_time},
+            </if>
+            <if test="book_status != null" >
+                book_status = #{book_status},
+            </if>
+        </trim>
+        where book_id = #{book_id}
+    </update>
+
+    <!--新增图书-->
+    <insert id="addBook" parameterType="pojo.Book">
+        insert into book (book_name,book_isbn,book_press,book_author,book_price,book_publish_time,book_status)
+        values (#{book_name},#{book_isbn},#{book_press},#{book_author},#{book_price},#{book_publish_time},0)
+    </insert>
+
 
 </mapper>

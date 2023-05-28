@@ -8,4 +8,5 @@
         <setting name="logImpl" value="STDOUT_LOGGING" />
         <setting name="logPrefix" value="sql."/>
     </settings>
+
 </configuration>

@@ -7,11 +7,13 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
     <link rel="icon" href="${pageContext.request.contextPath}/bootstrap-icons-1.10.5/house-add-fill.svg" />
     <link href="https://cdn.staticfile.org/twitter-bootstrap/5.1.1/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdn.staticfile.org/jquery/3.7.0/jquery.min.js"></script>
+    <script src="../js/jquery.min.js/"></script>
+    <script src="https://cdn.staticfile.org/jquery/3.6.4/jquery.min.js"></script>
+    <script src="${pageContext.request.contextPath}/js/bootstrap.js"></script>
     <script src="https://cdn.staticfile.org/twitter-bootstrap/5.1.1/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-/mhDoLbDldZc3qpsJHpLogda//BVZbgYuw6kof4u2FrCedxOtgRZDTHgHUhOCVim" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/js/adminlte.min.js"></script>
-    <script src="${pageContext.request.contextPath}/js/book.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/js/book.js"></script>
 </head>
 <body class="hold-transition skin-green sidebar-mini">
 <div class="wrapper">
@@ -71,11 +73,22 @@
                             </p>
                         </a>
                     </li>
+                    <c:if test="${sessionScope.USER_SESSION.role == 'Admin'}">
+                        <li class="nav-item menu-open">
+                            <a href="${pageContext.request.contextPath}/book" class="nav-link active">
+                                <i class="nav-icon fas fa-tachometer-alt"></i>
+                                <p>
+                                    图书管理
+                                    <i class="right fas fa-angle-left"></i>
+                                </p>
+                            </a>
+                        </li>
+                    </c:if>
                     <li class="nav-item menu-open">
-                        <a href="${pageContext.request.contextPath}/book_manage" class="nav-link active">
+                        <a href="<c:url value="/admin/book_borrow.jsp"/>" class="nav-link active">
                             <i class="nav-icon fas fa-tachometer-alt"></i>
                             <p>
-                                图书管理
+                                图书借阅
                                 <i class="right fas fa-angle-left"></i>
                             </p>
                         </a>
@@ -90,9 +103,15 @@
         <!-- 主体内容 -->
         <section class="content">
             <div class="container-fluid">
-                <c:if test="${sessionScope.USER_SESSION.role == 'Admin'}">
-                    <a href="javascript:void(0)" class="btn btn-sm btn-secondary float-left">新增图书</a>
-                </c:if>
+                <div class="pull-left">
+                    <div class="form-group form-inline">
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-primary" title="新建" data-bs-toggle="modal"
+                                    data-bs-target="#addOrEditModal" onclick="resetFrom()"> 新增
+                            </button>
+                        </div>
+                    </div>
+                </div>
                 <h2 class="text-center display-4">搜索</h2>
                 <div class="row">
                     <div class="col-md-8 offset-md-2">
@@ -121,6 +140,7 @@
                                     <th class="sorting">出版社</th>
                                     <th class="sorting">标准ISBN</th>
                                     <th class="sorting">书籍状态</th>
+                                    <th class="sorting">发布时间</th>
                                     <th class="sorting">借阅人</th>
                                     <th class="sorting">借阅时间</th>
                                     <th class="sorting">预计归还时间</th>
@@ -139,17 +159,18 @@
                                             <c:if test="${book.book_status == 1}"><span class="badge badge-warning">借阅中</span></c:if>
                                             <c:if test="${book.book_status == 2}"><span class="badge badge-info">归还中</span></c:if>
                                         </td>
+                                        <td>${book.book_publish_time}</td>
                                         <td>${book.book_borrower}</td>
                                         <td>${book.book_borrow_time}</td>
                                         <td>${book.book_return_time}</td>
                                         <td class="text-center">
                                             <c:if test="${book.book_status == 0}">
-                                                <button type="button" class="btn bg-olive btn-xs" data-bs-toggle="modal" data-bs-target="#editModal"
+                                                <button type="button" class="btn bg-olive btn-xs" data-bs-toggle="modal" data-bs-target="#addOrEditModal"
                                                         onclick="findBookById(${book.book_id})"> 编辑
                                                 </button>
                                             </c:if>
                                             <c:if test="${book.book_status ==1 ||book.book_status == 2}">
-                                                <button type="button" class="btn bg-olive btn-xs" data-bs-toggle="modal" data-bs-target="#editModal"
+                                                <button type="button" class="btn bg-olive btn-xs" data-bs-toggle="modal" data-bs-target="#addOrEditModal"
                                                         onclick="findBookById(${book.book_id})" disabled> 编辑
                                                 </button>
                                             </c:if>
@@ -167,7 +188,7 @@
     </div>
 </div>
 <!-- 添加和编辑图书的模态窗口 -->
-<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+<div class="modal fade" id="addOrEditModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
      aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -175,38 +196,46 @@
                 <h3 id="myModalLabel">图书信息</h3>
             </div>
             <div class="modal-body">
-                <form id="editBook">
-                    <span><input type="hidden" id="book_id" name="book_id"></span>
-                    <table id="editTab" class="table table-bordered table-striped" width="800px">
+                <form id="addOrEditBook">
+                    <span><input type="hidden" name="book_id" id="book_id"></span>
+                    <table id="addOrEditTab" class="table table-bordered table-striped" width="800px">
                         <%--图书的id,不展示在页面--%>
                         <tr>
                             <td>图书名称</td>
-                            <td><input class="form-control" placeholder="图书名称" name="book_name" id="book_name"></td>
+                            <td><label for="book_name"></label><input class="form-control" placeholder="图书名称" name="book_name" id="book_name"></td>
                             <td>标准ISBN</td>
-                            <td><input class="form-control" placeholder="标准ISBN" name="book_isbn" id="book_isbn"></td>
+                            <td><label for="book_isbn"></label><input class="form-control" placeholder="标准ISBN" name="book_isbn" id="book_isbn"></td>
                         </tr>
                         <tr>
                             <td>出版社</td>
-                            <td><input class="form-control" placeholder="出版社" name="book_press" id="book_press"></td>
+                            <td><label for="book_press"></label><input class="form-control" placeholder="出版社" name="book_press" id="book_press"></td>
                             <td>作者</td>
-                            <td><input class="form-control" placeholder="作者" name="book_author" id="book_author"></td>
+                            <td><label for="book_author"></label><input class="form-control" placeholder="作者" name="book_author" id="book_author"></td>
                         </tr>
                         <tr>
                             <td>书籍价格<br/></td>
-                            <td><input class="form-control" placeholder="书籍价格" name="book_price" id="book_price"></td>
+                            <td><label for="book_price"></label><input class="form-control" placeholder="书籍价格" name="book_price" id="book_price"></td>
                             <td>上架状态</td>
                             <td>
-                                <select class="form-control" id="book_status" name="book_status" >
+                                <label for="book_status"></label><select class="form-control" name="book_status" id="book_status">
                                     <option value="0">上架</option>
                                     <option value="3">下架</option>
                                 </select>
                             </td>
                         </tr>
+                        <tr>
+                            <td>发布时间</td>
+                            <td>
+                                <label for="book_publish_time"></label><input class="form-control" type="date" name="book_publish_time" id="book_publish_time">
+                            </td>
+
+                        </tr>
                     </table>
                 </form>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-success" data-bs-dismiss="modal" aria-hidden="true" id="aoe" disabled onclick="edit()">保存
+                <button class="btn btn-success" data-bs-dismiss="modal" aria-hidden="true" id="aoe" disabled onclick="addOrEdit()">
+                    保存
                 </button>
                 <button class="btn btn-default" data-bs-dismiss="modal" aria-hidden="true">关闭</button>
             </div>
@@ -214,4 +243,63 @@
     </div>
 </div>
 </body>
+<script TYPE="text/javascript">
+    function addOrEdit() {
+        //获取表单中图书id的内容
+        const book_id = $("#book_id").val();
+        //如果表单中有图书id的内容，说明本次为编辑操作
+        if(book_id > 0){
+            const url = getProjectPath() + "/editBook";
+            const formData = $("#addOrEditBook").serializeArray();
+            console.log(formData)
+            $.post(url, formData, function (response) {
+                alert(response.message)
+                if (response.success === true) {
+                    const book_name = $("#book_name").val();
+                    window.location.href = getProjectPath()+"/book_manage?inputContent="+book_name;
+                }
+            })
+        } else{
+            const book_name = $("#book_name").val()
+            const book_isbn = $("#book_isbn").val()
+            const book_press = $("#book_press").val()
+            const book_price = $("#book_price").val()
+            const book_publish_time = $("#book_publish_time").val()
+            const book_author = $("#book_author").val()
+            const param = {
+                book_name: book_name,
+                book_isbn: book_isbn,
+                book_press: book_press,
+                book_price: book_price,
+                book_publish_time: book_publish_time,
+                book_author: book_author
+            }
+            $.ajax(
+                {
+                    url: getProjectPath() + "/addBook",
+                    type: "post",
+                    data: JSON.stringify(param),
+                    contentType:"application/json",
+                    dataType: "json",
+                    success: function (response) {
+                        alert(response.message)
+                        window.location.href = getProjectPath()+"/book_manage?inputContent="+book_name;
+                    }
+
+                }
+            )
+/*            const url = getProjectPath() + "/addBook";
+
+            const formData = $("#addOrEditBook").serializeArray();
+            console.log(formData)
+            $.post(url, formData, function (response) {
+                alert(response.message)
+                if (response.success === true) {
+                    window.location.href = getProjectPath()+"/book_manage?inputContent="+book_name;
+                }
+            })*/
+        }
+
+    }
+</script>
 </html>

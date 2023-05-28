@@ -1,7 +1,9 @@
 package mapper;
 
 import com.github.pagehelper.Page;
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 import pojo.Book;
 
 
@@ -17,5 +19,8 @@ public interface BookMapper {
     @Select("select * from book where book_id = #{id}")
     Book selectBookById(String id);
 
+
     int editBook(Book book);
+
+    int addBook(Book book);
 }

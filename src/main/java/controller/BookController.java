@@ -5,8 +5,7 @@ import entity.Result;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import pojo.Book;
 import service.BookService;
@@ -73,17 +72,38 @@ public class BookController {
      */
     @ResponseBody
     @RequestMapping("/editBook")
-    public Result<Object> editBook(Book book){
+    public Result editBook(Book book){
         try {
             int count= bookService.editBook(book);
             System.out.println(book);
             if(count!=1){
-                return new Result<Object>(false, "编辑失败!");
+                return new Result(false, "编辑失败!");
             }
-            return new Result<Object>(true, "编辑成功!");
+            return new Result(true, "编辑成功!");
         }catch (Exception e){
             e.printStackTrace();
-            return new Result<Object>(false, "编辑失败!");
+            return new Result(false, "编辑失败!");
         }
     }
+
+    /**
+     * 添加图书
+     */
+    @ResponseBody
+    @RequestMapping(value = "/addBook")
+    public Result<Object> addBook(@RequestBody  Book book) {
+        try {
+            System.out.println(book);
+            int count=bookService.addBook(book);
+
+            if(count!=1){
+                return new Result<>(false, "新增图书失败!");
+            }
+            return new Result<>(true, "新增图书成功!");
+        }catch (Exception e){
+            e.printStackTrace();
+            return new Result<>(false, "新增图书失败!");
+        }
+    }
+
 }

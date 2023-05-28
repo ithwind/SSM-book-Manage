@@ -40,7 +40,6 @@
           <th class="sorting">借阅人</th>
           <th class="sorting">借阅时间</th>
           <th class="sorting">预计归还时间</th>
-          <th class="text-center">操作</th>
         </tr>
         </thead>
         <tbody>
@@ -58,16 +57,6 @@
             <td>${book.book_borrower}</td>
             <td>${book.book_borrow_time}</td>
             <td>${book.book_return_time}</td>
-            <td class="text-center">
-              <c:if test="${book.book_status ==0}">
-                <button type="button" class="btn bg-olive btn-xs" data-toggle="modal" data-target="#borrowModal"
-                        onclick="findBookById(${book.book_id},'borrow')"> 借阅
-                </button>
-              </c:if>
-              <c:if test="${book.book_status ==1 ||book.book_status ==2}">
-                <button type="button" class="btn bg-olive btn-xs" disabled>借阅</button>
-              </c:if>
-            </td>
           </tr>
         </c:forEach>
         </tbody>
@@ -77,12 +66,6 @@
   </div>
   <!-- /.card-body -->
   <div class="card-footer clearfix">
-    <%--新增按钮：如果当前登录用户是管理员，页面展示新增按钮--%>
-    <c:if test="${sessionScope.USER_SESSION.role == 'Admin'}">
-      <a href="javascript:void(0)" class="btn btn-sm btn-secondary float-left">新增图书</a>
-    </c:if>
-   <%-- <a href="javascript:void(0)" class="btn btn-sm btn-info float-left">下新订单</a>--%>
-    <a href="javascript:void(0)" class="btn btn-sm btn-secondary float-right">查看所有订单</a>
   </div>
   <!-- /.card-footer -->
 </div>
