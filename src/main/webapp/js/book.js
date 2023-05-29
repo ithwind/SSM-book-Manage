@@ -30,7 +30,6 @@ function findBookById(bookId){
             $("#book_status").val(response.data.book_status);
             $("#book_publish_time").val(response.data.book_publish_time)
     })
-
 }
 
 //点击编辑的窗口的确定按钮时，提交图书信息
@@ -119,3 +118,112 @@ function checkVal(){
         $("#aoe").attr("disabled",false)
     }
 }
+//点击借阅后查询
+function borrowBook(bookId){
+    resetStyle();
+    const url = getProjectPath() + "/findById?id=" + bookId;
+    $.get(url, function (response) {
+        $("#saveMsg").attr("disabled",true)
+        $("#book_return_time").val("");
+        $("#book_id").val(response.data.book_id);
+        $("#book_name").val(response.data.book_name);
+        $("#book_isbn").val(response.data.book_isbn);
+        $("#book_press").val(response.data.book_press);
+        $("#book_author").val(response.data.book_author);
+        $("#book_price").val(response.data.book_price);
+        $("#book_publish_time").val(response.data.book_publish_time)
+    })
+}
+
+/**
+ * 点击保存
+ */
+function borrow() {
+    const url = getProjectPath() + "/book_borrow";
+    const book_name = $("#book_name").val();
+    $.post(url, $("#borrowBook").serialize(), function (response) {
+        alert(response.message)
+        if (response.success === true) {
+            window.location.href = getProjectPath()+"/searchBorrowBook?inputContent="+book_name;
+        }
+    })
+}
+
+
+/**
+ * 数据展示页面分页插件的参数
+ * cur 当前页
+ * total 总页数
+ * len   显示多少页数
+ * pageSize 1页显示多少条数据
+ * goUrl 页码变化时 跳转的路径
+ * targetId 分页插件作用的id
+ */
+const pageArgs = {
+    cur: 1,
+    total: 0,
+    len: 5,
+    pageSize: 10,
+    goUrl: "",
+    targetId: 'pagination',
+    callback: function (total) {
+        const oPages = document.getElementsByClassName('page-index');
+        for (let i = 0; i < oPages.length; i++) {
+            oPages[i].onclick = function () {
+                changePage(this.getAttribute('data-index'), pageArgs.pagesize);
+            }
+        }
+        const goPage = document.getElementById('go-search');
+        goPage.onclick = function () {
+            const index = document.getElementById('yeshu').value;
+            if (!index || (+index > total) || (+index < 1)) {
+                return;
+            }
+            changePage(index, pageArgs.pagesize);
+        }
+    }
+};
+/**
+ *图书查询栏的查询参数
+ * name 图书名称
+ * author 图书作者
+ * press 图书出版社
+ */
+const bookVO = {
+    name: '',
+    author: '',
+    press: ''
+};
+/**
+ *借阅记录查询栏的查询参数
+ * name 图书名称
+ * borrower 借阅人
+ */
+const recordVO = {
+    bookName: '',
+    borrower: ''
+};
+
+//数据展示页面分页插件的页码发送变化时执行
+function changePage(pageNo,pageSize) {
+    pageargs.cur=pageNo;
+    pageargs.pagesize=pageSize;
+    document.write("<form action="+pageargs.gourl +" method=post name=form1 style='display:none'>");
+    document.write("<input type=hidden name='pageNum' value="+pageargs.cur+" >");
+    document.write("<input type=hidden name='pageSize' value="+pageargs.pagesize+" >");
+    //如果跳转的是图书信息查询的相关链接，提交图书查询栏中的参数
+    if(pageargs.gourl.indexOf("book")>=0){
+        document.write("<input type=hidden name='name' value="+bookVO.name+" >");
+        document.write("<input type=hidden name='author' value="+bookVO.author+" >");
+        document.write("<input type=hidden name='press' value="+bookVO.press+" >");
+    }
+    //如果跳转的是图书记录查询的相关链接，提交图书记录查询栏中的参数
+    if(pageargs.gourl.indexOf("record")>=0){
+        document.write("<input type=hidden name='bookname' value="+recordVO.bookname+" >");
+        document.write("<input type=hidden name='borrower' value="+recordVO.borrower+" >");
+    }
+    document.write("</form>");
+    document.form1.submit();
+    pagination(pageargs);
+}
+

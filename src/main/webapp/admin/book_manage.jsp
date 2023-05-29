@@ -24,7 +24,7 @@
             <!-- Left navbar links -->
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                    <a class="nav-link" data-widget="control-sidebar" data-controlsidebar-slide="true" href="${pageContext.request.contextPath}/logout" role="button">
+                    <a class="nav-link" data-widget="control-sidebar" data-controlsidebar-slide="true" onclick="window.location.href='${pageContext.request.contextPath}/logout'" role="button">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-right" viewBox="0 0 16 16">
                             <path fill-rule="evenodd" d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0v2z"></path>
                             <path fill-rule="evenodd" d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3z"></path>
@@ -39,7 +39,6 @@
     <!-- 页面头部 /-->
 
     <!-- 导航侧栏 -->
-    <!-- Main Sidebar Container -->
     <aside class="main-sidebar sidebar-dark-primary elevation-4">
         <!-- Brand Logo -->
         <a href="${pageContext.request.contextPath}/Home" class="brand-link">
@@ -49,7 +48,7 @@
         </a>
 
         <!-- 侧边栏 -->
-        <div class="sidebar">
+        <div class="sidebar os-padding">
             <!-- Sidebar user panel (optional) -->
             <div class="user-panel mt-3 pb-3 mb-3 d-flex">
                 <div class="image">
@@ -64,8 +63,8 @@
                 <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordtion="false">
                     <!-- Add icons to the links using the .nav-icon class
                          with font-awesome or any other icon font library -->
-                    <li class="nav-item menu-open">
-                        <a href="${pageContext.request.contextPath}/Home" class="nav-link active">
+                    <li class="nav-item">
+                        <a href="${pageContext.request.contextPath}/Home" class="nav-link">
                             <i class="nav-icon fas fa-tachometer-alt"></i>
                             <p>
                                 首页
@@ -74,7 +73,7 @@
                         </a>
                     </li>
                     <c:if test="${sessionScope.USER_SESSION.role == 'Admin'}">
-                        <li class="nav-item menu-open">
+                        <li class="nav-item">
                             <a href="${pageContext.request.contextPath}/book" class="nav-link active">
                                 <i class="nav-icon fas fa-tachometer-alt"></i>
                                 <p>
@@ -84,11 +83,40 @@
                             </a>
                         </li>
                     </c:if>
-                    <li class="nav-item menu-open">
-                        <a href="<c:url value="/admin/book_borrow.jsp"/>" class="nav-link active">
+                    <li class="nav-item">
+                        <a href="<c:url value="/admin/book_borrow.jsp"/>" class="nav-link">
                             <i class="nav-icon fas fa-tachometer-alt"></i>
                             <p>
                                 图书借阅
+                                <i class="right fas fa-angle-left"></i>
+                            </p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="${pageContext.request.contextPath}/searchBorrow" class="nav-link">
+                            <i class="nav-icon fas fa-tachometer-alt"></i>
+                            <p>
+                                当前借阅
+                                <i class="right fas fa-angle-left"></i>
+                            </p>
+                        </a>
+                    </li>
+                    <c:if test="${sessionScope.USER_SESSION.role == 'Admin'}">
+                        <li class="nav-item">
+                            <a href="${pageContext.request.contextPath}/confirmBook" class="nav-link">
+                                <i class="nav-icon fas fa-tachometer-alt"></i>
+                                <p>
+                                    借阅管理
+                                    <i class="right fas fa-angle-left"></i>
+                                </p>
+                            </a>
+                        </li>
+                    </c:if>
+                    <li class="nav-item">
+                        <a href="${pageContext.request.contextPath}/recordHistory" class="nav-link">
+                            <i class="nav-icon fas fa-tachometer-alt"></i>
+                            <p>
+                                借阅记录
                                 <i class="right fas fa-angle-left"></i>
                             </p>
                         </a>

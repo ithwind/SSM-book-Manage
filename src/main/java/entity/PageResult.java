@@ -10,9 +10,9 @@ import pojo.Book;
  */
 public class PageResult implements Serializable{
 	private long total; // 总数
-	private List<Book> rows; // 返回的数据集合
+	private List<?> rows; // 返回的数据集合
 	
-	public PageResult(long total, List<Book> rows) {
+	public PageResult(long total, List<?> rows) {
 		super();
 		this.total = total;
 		this.rows = rows;
@@ -23,7 +23,7 @@ public class PageResult implements Serializable{
 	public void setTotal(long total) {
 		this.total = total;
 	}
-	public List<Book> getRows() {
+	public List<?> getRows() {
 		return rows;
 	}
 	public void setRows(List rows) {

@@ -46,4 +46,26 @@ public class BookServiceImpl implements BookService {
     public int addBook(Book book) {
         return bookMapper.addBook(book);
     }
+
+    @Override
+    public int borrowBook(Book book) {
+        //根据id查询出需要借阅的完整图书信息
+        Book b = this.selectBookById(String.valueOf(book.getBook_id()));
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        //设置当天为借阅时间
+        book.setBook_borrow_time(dateFormat.format(new Date()));
+        //设置所借阅的图书状态为借阅中
+        book.setBook_status(1);
+        //将图书的价格设置在book对象中
+        book.setBook_price(b.getBook_price());
+        //将图书的上架设置在book对象中
+        book.setBook_publish_time(b.getBook_publish_time());
+        return bookMapper.editBook(book);
+    }
+
+    @Override
+    public PageResult searchConfirmBook() {
+        Page<Book> page = bookMapper.searchConfirmBook();
+        return new PageResult(page.getTotal(), page.getResult());
+    }
 }

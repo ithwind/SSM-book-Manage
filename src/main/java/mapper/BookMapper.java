@@ -19,8 +19,10 @@ public interface BookMapper {
     @Select("select * from book where book_id = #{id}")
     Book selectBookById(String id);
 
-
     int editBook(Book book);
 
     int addBook(Book book);
+
+    @Select("select * from book where book_status = 2")
+    Page<Book> searchConfirmBook();
 }

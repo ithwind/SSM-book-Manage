@@ -26,6 +26,9 @@ public class UserController {
 
     @Autowired
     BCryptPasswordEncoder encoder;
+
+    @Autowired
+    HeaderController headerController;
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder(){
         return new BCryptPasswordEncoder();
@@ -44,6 +47,7 @@ public class UserController {
                u.setUsername(username);
                u.setRole(role);
                request.getSession().setAttribute("USER_SESSION", u);
+               headerController.uploadHeader(request);
                return "redirect:/Home";
            }else{
                request.setAttribute("msg", "用户名或密码错误");

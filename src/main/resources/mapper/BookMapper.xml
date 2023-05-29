@@ -27,6 +27,15 @@
             <if test="book_status != null" >
                 book_status = #{book_status},
             </if>
+            <if test="book_borrower != null" >
+                book_borrower = #{book_borrower},
+            </if>
+            <if test="book_borrow_time != null" >
+                book_borrow_time = #{book_borrow_time},
+            </if>
+            <if test="book_return_time != null" >
+                book_return_time = #{book_return_time},
+            </if>
         </trim>
         where book_id = #{book_id}
     </update>

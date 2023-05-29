@@ -30,5 +30,12 @@ public interface BookService {
      * 添加图书
      */
     int addBook(Book book);
-
+    /**
+     * 借阅图书
+     */
+    int borrowBook(Book book);
+    /**
+     * 查询待确认图书
+     */
+    PageResult searchConfirmBook();
 }
