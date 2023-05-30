@@ -20,7 +20,7 @@
             <label>
                 <input type="password" name="password" placeholder="password" class="input-item">
             </label>
-            <button type="submit" class="btn" formtarget="_self">Sign Up</button>
+            <button type="submit" class="btn" formtarget="_self" onclick="alert('注册成功')">Sign Up</button>
         </form>
     </div>
 </div>
